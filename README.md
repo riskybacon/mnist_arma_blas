@@ -7,8 +7,8 @@ This small project is an intermediate step of moving the
 
 Lessons learned in this project will be used in the [cakematic](https://github.com/riskybacon/cakematic) library.
 
-Other goals were adding [Sphinx](http://www.sphinx-doc.org/en/stable/)
-style documentation stubs and integrating Sphinx with [Doxygen](http://www.stack.nl/~dimitri/doxygen/manual/docblocks.html).
+Two important goals are documentation using [Sphinx](http://www.sphinx-doc.org/en/stable/)
+documentation and integrating Sphinx with [Doxygen](http://www.stack.nl/~dimitri/doxygen/manual/docblocks.html).
 
 # Building
 
