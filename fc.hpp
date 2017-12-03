@@ -71,9 +71,13 @@ void fc_regularize(const T& theta, const T& theta_bias,
  * layer 1 activations * theta -> layer 2 activations
  *
  * @param delta       delta for layer 2 activations
+ *                    (batch_size x output features)
  * @param theta       weights for layer 1
+ *                    (output features x input features)
  * @param activation  activations for layer 1
+ *                    (batch size x input features)
  * @param result      delta for layer 1 activations
+ *                    (batch size x input features)
  */
 template<typename T>
 void fc_gradient_activation(const T& delta, const T& theta,
