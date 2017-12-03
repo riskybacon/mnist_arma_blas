@@ -20,8 +20,8 @@ struct mnist {
     using elem_t = T;
     /// Matrix type used for the images
     using mat_t = arma::Mat<elem_t>;
-    /// Column type used for the labels
-    using col_t = arma::Col<elem_t>;
+    /// Unsigned word column vector
+    using uvec_t = arma::ucolvec;
 
     /// Number of images in the set
     const size_t size;
@@ -34,7 +34,7 @@ struct mnist {
     /// Image data, each row contains a height x width image
     const mat_t images;
     /// Label data, column vector with values ranging from 0-9
-    const col_t labels;
+    const uvec_t labels;
 
     /**
      * Creates an MNIST object that contains images and labels
@@ -50,7 +50,7 @@ struct mnist {
         using std::tie;
 
         mat_t images;
-        col_t labels;
+        uvec_t labels;
         size_t width;
         size_t height;
 
@@ -70,7 +70,7 @@ private:
      * @param width_   The width of each image
      * @param height_  The height of each image
      */
-    mnist(const mat_t& images_, const col_t& labels_, size_t width_,
+    mnist(const mat_t& images_, const uvec_t& labels_, size_t width_,
       size_t height_)
     : images(images_), labels(labels_), width(width_), height(height_),
       size(labels_.n_rows), channels(1) {}
@@ -81,7 +81,7 @@ private:
      * @param filename  The filename of the label file
      * @return the labels in a column vector
      */
-    static col_t load_labels(const std::string& filename) {
+    static uvec_t load_labels(const std::string& filename) {
         std::ifstream file = open_file(filename);
 
         uint32_t magic_number = 0;
@@ -93,7 +93,7 @@ private:
         magic_number = reverse_int(magic_number);
         num_images = reverse_int(num_images);
 
-        col_t labels(num_images);
+        uvec_t labels(num_images);
 
         for(size_t img = 0; img < num_images; ++img) {
             unsigned char temp = 0;

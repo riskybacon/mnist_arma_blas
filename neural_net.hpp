@@ -55,8 +55,8 @@ struct neural_net {
     using elem_t = T;
     /// Matrix type
     using mat_t = arma::Mat<elem_t>;
-    /// Matrix subview type
-    using subview_t = arma::subview<elem_t>;
+    /// Unsigned word column vector
+    using uvec_t = arma::ucolvec;
     /// MNIST type
     using mnist = mnist<elem_t>;
 
@@ -105,7 +105,6 @@ struct neural_net {
     neural_net(const mnist& input_, elem_t lambda_ = 1)
     : input(input_),
       lambda(lambda_) {
-        using rowvec = arma::Row<elem_t>;
         using arma::zeros;
         using arma::ones;
         using arma::randu;
@@ -155,7 +154,7 @@ struct neural_net {
         feed_forward();
 
         // Find neuron with maximum confidence, this is our predicted label
-        arma::ucolvec predictions = index_max(a3, 1);
+        const uvec_t predictions = index_max(a3, 1);
 
         // Display percentage of correct labels
         return elem_t(sum(predictions == input.labels)) / input.labels.n_rows;
