@@ -8,6 +8,7 @@
 #include "mnist.hpp"
 #include "gemm.hpp"
 #include "fc.hpp"
+#include "mat.hpp"
 
 #include <algorithm>
 #include <random>
@@ -105,9 +106,9 @@ struct neural_net {
     neural_net(const mnist& input_, elem_t lambda_ = 1)
     : input(input_),
       lambda(lambda_) {
-        using arma::zeros;
-        using arma::ones;
-        using arma::randu;
+        //using arma::zeros;
+        // using arma::ones;
+        // using arma::randu;
 
         elem_t epsilon = 0.12;
         theta1 = (randu<mat_t>(64, input.images.n_cols) * 2 - 1) * epsilon;
