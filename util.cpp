@@ -3,17 +3,16 @@
 
 std::ifstream open_file(const std::string& filename) {
     std::ifstream file;
-
-    // Set exceptions to be thrown on failure
-    file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-
     try {
+        // Set exceptions to be thrown on failure
+        file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
         file.open(filename);
-    } catch (std::system_error& e) {
+    } catch (std::ios_base::failure& e) {
         std::stringstream err;
         err << "Error opening '" << filename << "': " << e.code().message();
         throw std::runtime_error(err.str());
     }
+
 
     return file;
 }
