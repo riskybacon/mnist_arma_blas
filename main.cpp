@@ -54,18 +54,3 @@ int main(int, char**) {
         std::cerr << err.what() << std::endl;
     }
 }
-
-
-// no_bias(theta1)  theta1
-// no_bias(theta2)  theta2
-// no_bias(d_theta1) d_theta1
-// no_bias(d_theta2) d_theta2
-// theta1.col(0) theta1_bias
-// theta2.col(0) theta2_bias
-// no_bias(a1) a1
-// no_bias(a2) a2
-// no_bias(a3) a3
-// no_bias(delta2) delta2
-// no_bias(delta3) delta3
-// d_theta1.col(0) d_theta1_bias
-// d_theta2.col(0) d_theta2_bias
