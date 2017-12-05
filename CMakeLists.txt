@@ -18,10 +18,6 @@ configure_file(config.h.in
   config.h
 )
 
-find_library(ARMADILLO_LIB armadillo
-  /usr/local/lib
-)
-
 find_library(PNGWRITER_LIB pngwriter
   /usr/local/lib
 )
@@ -32,9 +28,13 @@ set(SOURCE_FILES
 )
 
 set(HEADER_FILES
-  util.hpp
-  neural_net.hpp
+  fc.hpp
+  gemm.hpp
+  mat.hpp
   mnist.hpp
+  neural_net.hpp
+  png_weight.hpp
+  util.hpp
 )
 
 include(CheckCXXCompilerFlag)
@@ -59,6 +59,5 @@ target_include_directories(${PROJ_NAME} PRIVATE
 
 target_link_libraries(${PROJ_NAME}
   "-framework Accelerate"
-  ${ARMADILLO_LIB}
   ${PNGWRITER_LIB}
 )
