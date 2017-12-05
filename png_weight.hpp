@@ -53,7 +53,6 @@ void weight_png(const std::string& filename, const T& weight,
         draw_weight(png, weight, img, x, y, img_width, img_height, scale, bias);
     }
 
-    //png.scale_k(5);
     png.close();
 }
 
