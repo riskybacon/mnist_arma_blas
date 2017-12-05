@@ -105,21 +105,11 @@ struct neural_net {
     neural_net(const mnist& input_, elem_t lambda_ = 1)
     : input(input_),
       lambda(lambda_) {
-        //using arma::zeros;
-        // using arma::ones;
-        // using arma::randu;
         elem_t epsilon = 0.12;
-#if 0
-        theta1 = (randu<mat_t>(64, input.images.n_cols) * 2 - 1) * epsilon;
-        theta2 = (randu<mat_t>(10, theta1.n_rows) * 2 - 1) * epsilon;
-        theta1_bias = (randu<mat_t>(theta1.n_rows, 1) * 2 - 1) * epsilon;
-        theta2_bias = (randu<mat_t>(theta2.n_rows, 1) * 2 - 1) * epsilon;
-#else
         theta1 = randu<mat_t>(64, input.images.n_cols, -epsilon, epsilon);
         theta2 = randu<mat_t>(10, theta1.n_rows, -epsilon, epsilon);
         theta1_bias = randu<mat_t>(theta1.n_rows, 1, -epsilon, epsilon);
         theta2_bias = randu<mat_t>(theta2.n_rows, 1, -epsilon, epsilon);
-#endif
         d_theta1 = zeros<mat_t>(theta1.n_rows, theta1.n_cols);
         d_theta2 = zeros<mat_t>(theta2.n_rows, theta2.n_cols);
         d_theta1_bias = zeros<mat_t>(theta1.n_rows, 1);
