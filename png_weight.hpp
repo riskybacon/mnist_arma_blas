@@ -17,7 +17,7 @@
  * @param padding_x   The amount of padding between each weight square, x dim
  * @param padding_y   The amount of padding between each weight square, y dim
  */
-template<typename T = arma::mat>
+template<typename T>
 void weight_png(const std::string& filename, const T& weight,
   size_t img_width, size_t img_height, size_t padding_x, size_t padding_y) {
     using mat_t = T;
@@ -50,7 +50,7 @@ void weight_png(const std::string& filename, const T& weight,
         const size_t x = padding_x + (col * img_width) + col * padding_x;
         const size_t y = padding_y + (row * img_height) + row * padding_y;
         // Draw the weight
-        draw_weight(png, weight.row(img), x, y, img_width, img_height, scale, bias);
+        draw_weight(png, weight, img, x, y, img_width, img_height, scale, bias);
     }
 
     //png.scale_k(5);
@@ -60,10 +60,11 @@ void weight_png(const std::string& filename, const T& weight,
 /**
  * Draw a set of weights for a single neuron at position x,y in a png
  */
-template<typename T = arma::rowvec>
-void draw_weight(pngwriter& png, const T& row, size_t start_x,
+template<typename T>
+void draw_weight(pngwriter& png, const T& mt, size_t row, size_t start_x,
   size_t start_y, size_t img_width, size_t img_height,
   typename T::elem_type scale, typename T::elem_type bias) {
+    using mat_t = T;
     using elem_t = typename T::elem_type;
 
     for (size_t x = 0; x < img_width; ++x) {
@@ -71,7 +72,7 @@ void draw_weight(pngwriter& png, const T& row, size_t start_x,
             size_t pos_x = start_x + x;
             size_t pos_y = png.getheight() - (start_y + y);
 
-            elem_t val = (row(y * img_width + x) + bias) * scale;
+            elem_t val = (mt(row, y * img_width + x) + bias) * scale;
 
             png.plot(pos_x, pos_y, val, val, val);
         }

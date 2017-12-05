@@ -1,7 +1,7 @@
 #ifndef MNIST_HPP_
 #define MNIST_HPP_
 
-#include <armadillo>
+#include "mat.hpp"
 #include "util.hpp"
 
 /**
@@ -19,9 +19,9 @@ struct mnist {
     /// The element type, either float or double
     using elem_t = T;
     /// Matrix type used for the images
-    using mat_t = arma::Mat<elem_t>;
+    using mat_t = mat<elem_t>;
     /// Unsigned word column vector
-    using uvec_t = arma::ucolvec;
+    using uvec_t = mat<uint32_t>;
 
     /// Number of images in the set
     const size_t size;
@@ -93,12 +93,12 @@ private:
         magic_number = reverse_int(magic_number);
         num_images = reverse_int(num_images);
 
-        uvec_t labels(num_images);
+        uvec_t labels(num_images, 1);
 
         for(size_t img = 0; img < num_images; ++img) {
             unsigned char temp = 0;
             file.read((char*) &temp, sizeof(temp));
-            labels(img) = elem_t(temp);
+            labels(img, 0) = elem_t(temp);
         }
 
         return labels;

@@ -1,5 +1,4 @@
 #include <iostream>
-#include <armadillo>
 #include <config.h>
 #include <string>
 #include "png_weight.hpp"

@@ -5,8 +5,6 @@
  * \brief fully connected layer functions
  */
 
-#include <armadillo>
-
 /**
  * Calculate the weight gradient for a fully connected layer
  *

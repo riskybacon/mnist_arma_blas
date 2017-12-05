@@ -1,7 +1,6 @@
 #ifndef NEURAL_NET_HPP_
 #define NEURAL_NET_HPP_
 
-#include <armadillo>
 #include <config.h>
 #include <string>
 #include "util.hpp"
@@ -55,9 +54,9 @@ struct neural_net {
     /// The element type, either float or double
     using elem_t = T;
     /// Matrix type
-    using mat_t = arma::Mat<elem_t>;
+    using mat_t = mat<elem_t>;
     /// Unsigned word column vector
-    using uvec_t = arma::ucolvec;
+    using uvec_t = mat<uint32_t>;
     /// MNIST type
     using mnist = mnist<elem_t>;
 
@@ -109,12 +108,18 @@ struct neural_net {
         //using arma::zeros;
         // using arma::ones;
         // using arma::randu;
-
         elem_t epsilon = 0.12;
+#if 0
         theta1 = (randu<mat_t>(64, input.images.n_cols) * 2 - 1) * epsilon;
         theta2 = (randu<mat_t>(10, theta1.n_rows) * 2 - 1) * epsilon;
         theta1_bias = (randu<mat_t>(theta1.n_rows, 1) * 2 - 1) * epsilon;
         theta2_bias = (randu<mat_t>(theta2.n_rows, 1) * 2 - 1) * epsilon;
+#else
+        theta1 = randu<mat_t>(64, input.images.n_cols, -epsilon, epsilon);
+        theta2 = randu<mat_t>(10, theta1.n_rows, -epsilon, epsilon);
+        theta1_bias = randu<mat_t>(theta1.n_rows, 1, -epsilon, epsilon);
+        theta2_bias = randu<mat_t>(theta2.n_rows, 1, -epsilon, epsilon);
+#endif
         d_theta1 = zeros<mat_t>(theta1.n_rows, theta1.n_cols);
         d_theta2 = zeros<mat_t>(theta2.n_rows, theta2.n_cols);
         d_theta1_bias = zeros<mat_t>(theta1.n_rows, 1);
@@ -155,7 +160,7 @@ struct neural_net {
         feed_forward();
 
         // Find neuron with maximum confidence, this is our predicted label
-        const uvec_t predictions = index_max(a3, 1);
+        const uvec_t predictions = col_max(a3);
 
         // Display percentage of correct labels
         return elem_t(sum(predictions == input.labels)) / input.labels.n_rows;
