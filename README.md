@@ -3,16 +3,21 @@
 
 This small project is an intermediate step of moving the
 [mnist_arma](https://github.com/riskybacon/mnist_arma) project away from
-[Armadillo](http://arma.sourceforge.net).
+[Armadillo](http://arma.sourceforge.net). There are no Armadillo references in this project except for
+earlier commits.
 
 Lessons learned in this project will be used in the [cakematic](https://github.com/riskybacon/cakematic) library.
 
 Two important goals are documentation using [Sphinx](http://www.sphinx-doc.org/en/stable/)
 documentation and integrating Sphinx with [Doxygen](http://www.stack.nl/~dimitri/doxygen/manual/docblocks.html).
 
-# Building
+# Dependencies:
 
-Dependencies: [armadillo](http://arma.sourceforge.net)
+[pngwriter](https://github.com/pngwriter/pngwriter)
+
+Install it into /usr/local
+
+# Building
 
 ```
 git clone git@github.com:riskybacon/mnist_arma_blas.git
