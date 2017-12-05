@@ -1,7 +1,6 @@
 #ifndef MAT_HPP_
 #define MAT_HPP_
 
-#include <armadillo>
 #include <fstream>
 #include <random>
 
@@ -13,91 +12,115 @@ template<typename T>
 struct mat {
     using elem_t = T;
     using elem_type = T;
-    using mat_t = typename arma::Mat<elem_t>;
 
     size_t n_rows;
     size_t n_cols;
 
-    mat_t data;
+    elem_t * ptr = nullptr;
 
     mat(size_t n_rows_ = 0, size_t n_cols_ = 0)
     : n_rows(n_rows_),
-      n_cols(n_cols_),
-      data(n_rows_, n_cols_) {}
-
-    mat(arma::Mat<elem_t>&& other)
-    : n_rows(other.n_rows),
-      n_cols(other.n_cols),
-      data(std::move(other)) {}
-
-    mat(mat&& other)
-    : n_rows(other.n_rows),
-      n_cols(other.n_cols),
-      data(std::move(other.data)) {}
-
-    mat(const mat& other)
-    : n_rows(other.n_rows),
-      n_cols(other.n_cols),
-      data(other.data) {}
-
-    mat operator=(const mat& other) {
-        if (this != &other) {
-            n_rows = other.n_rows;
-            n_cols = other.n_cols;
-            data = other.data;
+      n_cols(n_cols_) {
+        if (n_rows > 0 && n_cols > 0) {
+            ptr = new elem_t[n_rows_ * n_cols_];
         }
-        return *this;
     }
 
-    mat operator=(const arma::Mat<elem_t>& other) {
-        n_rows = other.n_rows;
-        n_cols = other.n_cols;
-        data = other;
-        return *this;
-    }
+    // mat(mat&& other)
+    // : n_rows(other.n_rows),
+    //   n_cols(other.n_cols) {
+    //     std::swap(ptr, other.ptr);
+    // }
+    //
+    // mat(const mat& other)
+    // : n_rows(other.n_rows),
+    //   n_cols(other.n_cols) {
+    //     if (n_rows > 0 && n_cols > 0) {
+    //         ptr = new elem_t[n_rows * n_cols];
+    //     }
+    // }
+    //
+    // mat& operator=(const mat& other) {
+    //     if (this != &other) {
+    //         if (n_rows != other.n_rows || n_cols != other.n_cols) {
+    //             if (ptr != nullptr) {
+    //                 delete ptr;
+    //                 n_rows = other.n_rows;
+    //                 n_cols = other.n_cols;
+    //                 ptr = new elem_t[n_rows * n_cols];
+    //             }
+    //         }
+    //         memcpy(ptr, other.ptr, n_rows * n_cols * sizeof(elem_t));
+    //     }
+    //     return *this;
+    // }
+
+    // mat(const mat& other)
+    // : n_rows(other.n_rows),
+    //   n_cols(other.n_cols),
+    //   data(other.data) {}
+    //
+    // mat operator=(const mat& other) {
+    //     if (this != &other) {
+    //         n_rows = other.n_rows;
+    //         n_cols = other.n_cols;
+    //         data = other.data;
+    //     }
+    //     return *this;
+    // }
+    //
+    // mat operator=(const arma::Mat<elem_t>& other) {
+    //     n_rows = other.n_rows;
+    //     n_cols = other.n_cols;
+    //     data = other;
+    //     return *this;
+    // }
+
+    // ~mat() {
+    //     if (ptr != nullptr) {
+    //         delete ptr;
+    //         ptr = nullptr;
+    //     }
+    // }
 
     const elem_t* memptr() const {
-        return data.memptr();
+        return ptr;
     }
 
     elem_t* memptr() {
-        return data.memptr();
+        return ptr;
     }
 
     elem_t& operator()(size_t row, size_t col) {
-        return data(row, col);
+        return ptr[col * n_rows + row];
     }
 
     const elem_t& operator()(size_t row, size_t col) const {
-        return data(row, col);
+        return ptr[col * n_rows + row];
     }
 
     elem_t& operator[](size_t idx) {
-        return data[idx];
+        return ptr[idx];
     }
 
     const elem_t& operator[](size_t idx) const {
-        return data[idx];
+        return ptr[idx];
     }
 
     void transform(std::function<elem_t(elem_t)> map) {
-        for (size_t col = 0; col < n_cols; ++col) {
-            for (size_t row = 0; row < n_rows; ++row) {
-                data(row, col) = map(data(row, col));
-            }
+        for (size_t idx = 0; idx < n_rows * n_cols; ++idx) {
+            ptr[idx] = map(ptr[idx]);
         }
     }
 
     void for_each(std::function<void(elem_t)> map) const {
-        for (size_t col = 0; col < n_cols; ++col) {
-            for (size_t row = 0; row < n_rows; ++row) {
-                map(data(row, col));
-            }
+        for (size_t idx = 0; idx < n_rows * n_cols; ++idx) {
+            map(ptr[idx]);
         }
     }
 
     elem_t min() const {
-        elem_t min = data[0];
+        elem_t min = ptr[0];
         for_each([&](elem_t val) {
             if (val < min) {
                 min = val;
@@ -108,7 +131,7 @@ struct mat {
     }
 
     elem_t max() const {
-        elem_t max = data[0];
+        elem_t max = ptr[0];
         for_each([&](elem_t val) {
             if (val > max) {
                 max = val;
@@ -121,11 +144,10 @@ struct mat {
     mat operator==(const mat& other) const {
         mat equal = zeros<mat>(n_rows, n_cols);
 
-        for (size_t col = 0; col < n_cols; ++col) {
-            for (size_t row = 0; row < n_rows; ++row) {
-                equal(row, col) = (data(row, col) == other.data(row, col));
-            }
+        for (size_t idx = 0; idx < n_rows * n_cols; ++idx) {
+            equal[idx] = (ptr[idx] == other[idx]);
         }
+
         return equal;
     }
 };
