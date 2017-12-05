@@ -239,16 +239,4 @@ T sum(const mat<T>& matrix) {
     return result;
 }
 
-// template<typename T>
-// std::ostream& operator<<(std::ostream& out, const mat<T>& mt) {
-//     for (size_t row = 0; row < mt.n_rows; ++row) {
-//         std::cout << "row: " << row << std::endl;
-//         for (size_t col = 0; col < mt.n_cols; ++col) {
-//             T val = mt(row, col);
-//             // out << col << ": " << val << ", ";
-//         }
-//         out << std::endl;
-//     }
-//     return out;
-// }
 #endif /* end of include guard: MAT_HPP_ */
