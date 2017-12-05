@@ -28,62 +28,36 @@ struct mat {
         }
     }
 
-    // mat(mat&& other)
-    // : n_rows(other.n_rows),
-    //   n_cols(other.n_cols) {
-    //     std::swap(ptr, other.ptr);
-    // }
-    //
-    // mat(const mat& other)
-    // : n_rows(other.n_rows),
-    //   n_cols(other.n_cols) {
-    //     if (n_rows > 0 && n_cols > 0) {
-    //         ptr = new elem_t[n_rows * n_cols];
-    //     }
-    // }
-    //
-    // mat& operator=(const mat& other) {
-    //     if (this != &other) {
-    //         if (n_rows != other.n_rows || n_cols != other.n_cols) {
-    //             if (ptr != nullptr) {
-    //                 delete ptr;
-    //                 n_rows = other.n_rows;
-    //                 n_cols = other.n_cols;
-    //                 ptr = new elem_t[n_rows * n_cols];
-    //             }
-    //         }
-    //         memcpy(ptr, other.ptr, n_rows * n_cols * sizeof(elem_t));
-    //     }
-    //     return *this;
-    // }
+    mat(const mat& other)
+    : n_rows(other.n_rows),
+      n_cols(other.n_cols) {
+        if (n_rows > 0 && n_cols > 0) {
+            ptr = new elem_t[n_rows * n_cols];
+            memcpy(ptr, other.ptr, n_rows * n_cols * sizeof(elem_t));
+        }
+    }
 
-    // mat(const mat& other)
-    // : n_rows(other.n_rows),
-    //   n_cols(other.n_cols),
-    //   data(other.data) {}
-    //
-    // mat operator=(const mat& other) {
-    //     if (this != &other) {
-    //         n_rows = other.n_rows;
-    //         n_cols = other.n_cols;
-    //         data = other.data;
-    //     }
-    //     return *this;
-    // }
-    //
-    // mat operator=(const arma::Mat<elem_t>& other) {
-    //     n_rows = other.n_rows;
-    //     n_cols = other.n_cols;
-    //     data = other;
-    //     return *this;
-    // }
+    mat& operator=(const mat& other) {
+        if (this != &other) {
+            if (n_rows != other.n_rows || n_cols != other.n_cols) {
+                if (ptr != nullptr) {
+                    delete ptr;
+                }
+                n_rows = other.n_rows;
+                n_cols = other.n_cols;
+                ptr = new elem_t[n_rows * n_cols];
+            }
+            memcpy(ptr, other.ptr, n_rows * n_cols * sizeof(elem_t));
+        }
+        return *this;
+    }
 
-    // ~mat() {
-    //     if (ptr != nullptr) {
-    //         delete ptr;
-    //         ptr = nullptr;
-    //     }
-    // }
+    ~mat() {
+        if (ptr != nullptr) {
+            delete ptr;
+            ptr = nullptr;
+        }
+    }
 
     const elem_t* memptr() const {
         return ptr;
