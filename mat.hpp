@@ -22,6 +22,8 @@ struct mat {
     : n_rows(n_rows_),
       n_cols(n_cols_) {
         if (n_rows > 0 && n_cols > 0) {
+            // TODO: fix memory leak. Don't just put delete ptr in destructor,
+            // you need to handle copy construction and assignment properly
             ptr = new elem_t[n_rows_ * n_cols_];
         }
     }
