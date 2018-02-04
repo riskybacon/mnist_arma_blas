@@ -11,6 +11,8 @@ include_directories(
   ${CMAKE_BINARY_DIR}
 )
 
+find_package(Freetype REQUIRED)
+
 add_definitions("-DDATA_DIR=${CMAKE_SOURCE_DIR}")
 add_definitions("-DNO_FREETYPE")
 
