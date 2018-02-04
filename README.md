@@ -3,8 +3,8 @@
 
 This small project is an intermediate step of moving the
 [mnist_arma](https://github.com/riskybacon/mnist_arma) project away from
-[Armadillo](http://arma.sourceforge.net). There are no Armadillo references in this project except for
-earlier commits.
+[Armadillo](http://arma.sourceforge.net). There are no Armadillo references in
+this project except for earlier commits.
 
 Lessons learned in this project will be used in the [cakematic](https://github.com/riskybacon/cakematic) library.
 
@@ -13,9 +13,13 @@ documentation and integrating Sphinx with [Doxygen](http://www.stack.nl/~dimitri
 
 # Dependencies:
 
-[pngwriter](https://github.com/pngwriter/pngwriter)
+## [FreeType](https://www.freetype.org)
 
-Install it into /usr/local
+Required by pngwriter `brew install freetype`.
+
+## [pngwriter](https://github.com/pngwriter/pngwriter)
+
+Build from source, install into /usr/local
 
 # Building
 
@@ -32,12 +36,18 @@ make
 
 Tested under macOS, XCode 9
 
-If you are using iTerm2 and have [imagecat](https://iterm2.com/utilities/imgcat)
-installed, display the weights with:
+If you are using [iTerm2](https://iterm2.com), have [imagecat](https://iterm2.com/utilities/imgcat) and
+[ImageMagick]([http://imagemagick.org/) installed, display the weights with:
 
 ```
 convert theta1.png -resize 500 - | imagecat
 convert theta2.png -resize 500 - | imagecat
+```
+
+Install ImageMagick with [homebrew](https://brew.sh):
+
+```
+brew install imagemagick
 ```
 
 # Documentation
