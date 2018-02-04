@@ -13,13 +13,15 @@ documentation and integrating Sphinx with [Doxygen](http://www.stack.nl/~dimitri
 
 # Dependencies:
 
-## [FreeType](https://www.freetype.org)
+* [Homebrew](https://brew.sh), for macOS builds
+* [FreeType](https://www.freetype.org)
+* [pngwriter](https://github.com/pngwriter/pngwriter)
 
-Required by pngwriter `brew install freetype`.
+```
+brew install freetype
+```
 
-## [pngwriter](https://github.com/pngwriter/pngwriter)
-
-Build from source, install into /usr/local
+Install pngwriter from source, install into /usr/local
 
 # Building
 
